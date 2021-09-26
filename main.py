@@ -37,6 +37,7 @@ def grad_desc(X, y, alpha, num_iter):
 
     # init weights - i choose all to be zero initially for consistent results
     theta = np.zeros(X.shape[1])
+    np.reshape(theta,(14,1))
 
     for i in range(num_iter):
         z = np.dot(X, theta)
@@ -47,7 +48,7 @@ def grad_desc(X, y, alpha, num_iter):
         # if( i % 50000 == 0):
         #     calc_loss = cost(h, y)
         #     print('iter num: ', i, 'cost : ', calc_loss.mean(), 'theta: ', theta)
-    print('iter num: ', i, 'cost : ', cost(h, y).mean(), 'theta: ', theta)
+    #print('iter num: ', i, 'cost : ', cost(h, y).mean(), 'theta: ', theta)
     return theta
 
 
@@ -56,30 +57,38 @@ def log_reg(X, y, alpha, num_iter, Xt):
     intercept = np.ones((X.shape[0], 1))
     X = np.concatenate((intercept, X), axis=1)
     # add X0=1 to input data
-    Xt = np.concatenate(([[1,1,1,1,1,1,1,1,1,1,1,1,1]], Xt))
+    Xt = np.concatenate(([1], Xt))
+    np.reshape(Xt,(14,1))
     # [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]
     # build a model for each class to decide which one test data belongs to
 
-    # model for class 0
+    # model for class 1
     y_0 = np.copy(y)
-    y_0[y == 2] = 1
-    y_0 = y_0 - 1
-    y_0 = y_0 * -1
+    y_0[y == 2] = 0
+    y_0[y == 3] = 0
+
+    # y_0 = y_0 - 1
+    # y_0 = y_0 * -1
 
     theta_0 = grad_desc(X, y_0, alpha, num_iter)
-
-    # model for class 1
-    y_1 = np.copy(y)
-    y_1[y == 2] = 0
-
-    theta_1 = grad_desc(X, y_1, alpha, num_iter)
+    np.reshape(theta_0,(14,1))
 
     # model for class 2
+    y_1 = np.copy(y)
+    y_1[y == 2] = 1
+    y_1[y == 1] = 0
+    y_1[y == 3] = 0
+
+    theta_1 = grad_desc(X, y_1, alpha, num_iter)
+    np.reshape(theta_1,(14,1))
+    # model for class 3
     y_2 = np.copy(y)
     y_2[y == 1] = 0
-    y_2[y == 2] = 1
+    y_2[y == 2] = 0
+    y_2[y == 3] = 1
 
     theta_2 = grad_desc(X, y_2, alpha, num_iter)
+    np.reshape(theta_2,(14,1))
 
     # use i th model to decide for c_i
 
